@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IP Chack</title>
+</head>
+<body>
+    <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+    import { getDatabase, ref, onValue, get, child, set} from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCbLKuJsZ9du9hHBTUU5gfzN0Jxe7EQiXE",
+      authDomain: "live-cricket-47611.firebaseapp.com",
+      databaseURL: "https://live-cricket-47611-default-rtdb.firebaseio.com",
+      projectId: "live-cricket-47611",
+      storageBucket: "live-cricket-47611.firebasestorage.app",
+      messagingSenderId: "20357197788",
+      appId: "1:20357197788:web:e62f1d7d59b0129446e919",
+      measurementId: "G-R0P9EJ1KDJ"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+
+    const today = new Date();
+
+    const yesterday = new Date();
+    yesterday.setDate(today.getDate() - 1); // subtract 1 day
+
+    // Format yesterday's date
+    const yesterdayFormatted = yesterday.toLocaleDateString();
+    const todayDates = today.toLocaleDateString();
+
+    const todayDate = todayDates.replace(/[/]/g, '');
+    const yesterdayDate = yesterdayFormatted.replace(/[/]/g, '');
+
+    // console.log(yesterdayDate);
+    // console.log(todayDate);
+
+    // Upload to Firebase
+    async function uploadData() {
+
+        const res = await fetch('https://api.ipify.org?format=json');
+        const data = await res.json();
+        const ip = data.ip;
+        // console.log(ip);
+
+      const ips = ip;
+      const noDots = ips.replace(/\./g, ""); // Remove all dots
+      //   console.log(noDots);
+        
+      //   await set(ref(db, "activeUsers/monthly"), monthlyData);
+      //   await set(ref(db, "activeUsers/daily"), dailyData);
+      await set(ref(db, "TodayactiveUsers/" + todayDate + "/" + noDots), {
+        ip: ip
+      });
+
+      await set(ref(db, "VisitorsUsers/" + todayDate + "/" + noDots), {
+        ip: ip
+      });
+      
+    }
+
+    await uploadData();
+  </script>
+</body>
+</html>
