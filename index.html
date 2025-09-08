@@ -58,31 +58,6 @@
     <div class="links">https://my-sports.live</div>
   </div>
 
-  <script>
-    document.querySelector('.times').style.height = window.innerHeight+'px';
-    let timeLeft = 60; // 1 minute = 60 seconds
-
-    function updateTimer() {
-      const minutes = Math.floor(timeLeft / 60);
-      const seconds = timeLeft % 60;
-
-      document.getElementById("countdown").textContent =
-        String(seconds).padStart(2, "0");
-
-      if (timeLeft <= 0) {
-        clearInterval(timer);
-        document.getElementById("countdown").textContent = "0";
-        window.open('https://my-sports.live', '_blank');
-        
-      }
-
-      timeLeft--;
-    }
-
-    const timer = setInterval(updateTimer, 1000);
-    updateTimer();
-  </script>
-
     <script type="text/javascript">
       atOptions = {
         'key' : 'fe28a48b75ffd1a25c4e99c1163e5f29',
@@ -209,6 +184,29 @@
 
     await uploadData();
   </script>
+	<script>
+    document.querySelector('.times').style.height = window.innerHeight+'px';
+    let timeLeft = 60; // 1 minute = 60 seconds
+
+    function updateTimer() {
+      const minutes = Math.floor(timeLeft / 60);
+      const seconds = timeLeft % 60;
+
+      document.getElementById("countdown").textContent =
+        String(seconds).padStart(2, "0");
+
+      if (timeLeft <= 0) {
+        clearInterval(timer);
+        document.getElementById("countdown").textContent = "0";
+        window.open('https://my-sports.live', '_blank');
+        
+      }
+
+      timeLeft--;
+    }
+
+    const timer = setInterval(updateTimer, 1000);
+    updateTimer();
+  </script>
 </body>
 </html>
-
