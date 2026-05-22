@@ -1,214 +1,1139 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="mnd-ver" content="0uxyglpo3nvztujalbq" />
-    <title>IP Chack</title>
-      <style>
-    .times {
-      display: flex;
-      justify-content: space-evenly;
-      align-items: center;
-      background: #0d1117a1;
-      font-family: Arial, sans-serif;
-      flex-direction: column;
-      position: absolute;
-      width: 100%;
-	  z-index: 9999 !important;
-    }
-    .text {
-      background: black;
-      color: #fff;
-      padding: 20px;
-      font-size: 70px;
-      border-radius: 80px;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>কুরআন শিখুন</title>
+  <link rel="icon" href="./img/logo.png">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #f8fafc;
+      color: #0f172a;
     }
 
-    .timer {
-      font-size: 4rem;
-      color: #00ff88;
-      background: #1a1a1ac4;
-      padding: 30px 50px;
-      border-radius: 50%;
-      box-shadow: 0 0 20px rgba(0,0,0,0.6);
-    }
-    .links {
+    .navbar {
+      padding: 18px 0;
       background: #ffffff;
-      width: 100%;
-      font-size: 50px;
-      color: #0053f1;
-      text-align: center;
+      box-shadow: 0 2px 25px rgb(0 0 0 / 52%);
     }
 
-    @media only screen and (max-width: 600px) {
-      .text{
-        font-size: 30px;
+    .navbar-brand {
+      font-size: 30px;
+      font-weight: 700;
+      color: #2563eb !important;
+    }
+
+    .nav-link {
+      font-weight: 500;
+      margin-left: 10px;
+      color: #334155 !important;
+    }
+
+    li.nav-item a.nav-link {
+      border: 1px solid #078fff;
+      border-radius: 2px;
+      cursor: pointer;
+    }
+
+    .info {
+      width: 140px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .name-img {
+      display: flex;
+      align-items: center;
+    }
+
+    div#profile {
+      display: flex !important;
+      align-items: center;
+    }
+
+    div#profile img {
+      width: 40px;
+      border: 1px solid #0097ff;
+      border-radius: 50%;
+      margin-right: 5px;
+    }
+    .hero {
+      padding: 100px 0;
+      background: linear-gradient(135deg, #eef2ff, #ffffff);
+    }
+
+    .hero h1 {
+      font-size: 62px;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 20px;
+    }
+
+    .hero p {
+      font-size: 18px;
+      color: #475569;
+      margin-bottom: 30px;
+    }
+
+    .hero img {
+      border-radius: 25px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    .btn-primary-custom {
+      background: #2563eb;
+      color: white;
+      border-radius: 12px;
+      padding: 14px 28px;
+      font-weight: 600;
+      border: none;
+      transition: 0.3s;
+    }
+
+    .btn-primary-custom:hover {
+      background: #1d4ed8;
+      transform: translateY(-2px);
+    }
+
+    .section-title {
+      margin-bottom: 60px;
+    }
+
+    .section-title h2 {
+      font-size: 42px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .section-title p {
+      color: #64748b;
+    }
+
+    .feature-card,
+    .course-card,
+    .testimonial-card {
+      background: white;
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+      transition: 0.3s;
+      height: 100%;
+      cursor: pointer;
+    }
+
+    .feature-card:hover,
+    .course-card:hover {
+      transform: translateY(-8px);
+    }
+
+    .feature-icon {
+      width: 70px;
+      height: 70px;
+      border-radius: 15px;
+      background: #dbeafe;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      margin-bottom: 20px;
+    }
+
+    .course-card img {
+      border-radius: 15px;
+      margin-bottom: 20px;
+      height: 220px;
+      object-fit: cover;
+      width: 100%;
+    }
+
+    .price {
+      font-size: 20px;
+      font-weight: 700;
+      color: #2563eb;
+    }
+
+    .stats {
+      background: linear-gradient(135deg, #2563eb, #1e3a8a);
+      color: white;
+      padding: 80px 0;
+    }
+
+    .stat-number {
+      font-size: 48px;
+      font-weight: 700;
+    }
+
+    .testimonial-card img {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      margin-bottom: 20px;
+      border: 1px double #0043ff;
+      box-shadow: 0px 0px 16px -4px;
+    }
+
+    footer {
+      background: #0f172a;
+      color: white;
+      padding: 5px 0;
+      letter-spacing: 1px;
+      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    a.navbar-brand img {
+      width: 120px;
+      height: 80px;
+      border: 1px solid #a5a5a5;
+      border-radius: 3px;
+    }
+
+    span#year {
+      color: #38bdf8;
+      font-weight: bold;
+    }
+
+    h2{
+      text-align:center;
+      margin-bottom:20px;
       }
-      .links{
-        font-size: 25px;
+
+      .form{
+      display:none;
+      animation:fade .5s;
       }
+
+      .form.active{
+      display:block;
+      }
+
+      input{
+      width:100%;
+      padding:12px;
+      margin:10px 0;
+      border:1px solid #ddd;
+      border-radius:10px;
+      font-size:16px;
+      outline:none;
+      }
+
+      button{
+      width:100%;
+      padding:12px;
+      border:none;
+      border-radius:10px;
+      background:#4facfe;
+      color:#fff;
+      font-size:16px;
+      cursor:pointer;
+      }
+
+      button:hover{
+      background:#008cff;
+      }
+
+      .switch{
+      text-align:center;
+      margin-top:15px;
+      }
+
+      .switch span{
+      color:#4facfe;
+      font-weight:bold;
+      cursor:pointer;
+      }
+
+      .msg{
+      text-align:center;
+      margin-top:10px;
+      font-weight:bold;
+      }
+
+      section#signupLogin {
+        width: 400px;
+        position: absolute;
+        left: 32%;
+        top: 0;
+        background: #ffffffc7;
+        box-shadow: 0px 0px 20px 5px #959595;
+        border-radius: 3px;
+      }
+      .top{
+        top: 150px !important;
+      }
+    @keyframes fade{
+      from{
+      opacity:0;
+      transform:translateY(15px);
+      }
+      to{
+      opacity:1;
+      transform:translateY(0);
+      }
+    }
+
+    @media(max-width: 768px) {
+      nav .container {
+        flex-wrap: unset !important;
+      }
+      div#navbarNav ul {
+        flex-direction: column-reverse;
+      }
+      li.nav-item {
+        margin-top: 2px;
+        font-size: 12px;
+        text-align: center;
+      }
+      button.logout {
+        font-size: 15px;
+        padding: 3px;
+        background: #fff;
+        color: #4facfe;
+        border: 1px solid;
+        font-family: monospace;
+        border-radius: 3px;
+      }
+      .info{
+        width: 100px;
+        font-size: 10px;
+      }
+      .hero {
+        text-align: center;
+      }
+
+      .hero h1 {
+        font-size: 42px;
+      }
+      a.navbar-brand img{
+        width: 60px;
+        height: 40px;
+      }
+    }
+  </style>
+  <style>
+    .statuse {
+      font-size: 20px;
+      background: #ffdbdb;
+      color: #ff0000;
+      text-align: center;
+      border: 1px solid #ff0000;
+      border-radius: 30px;
+      cursor: pointer;
+    }
+    .statuseActive {
+      background: #dbffdb;
+      color: green;
+      border: 1px solid green;
+    }
+
+    .container.py-5 {
+      position: relative;
+    }
+    .courses-active {
+      border: 1px solid #3affffc7;
+      padding: 5px;
+      position: absolute;
+      border-radius: 5px;
+      top: 0;
+      background: #fff;
+    }
+    .courses-active h2 {
+      text-decoration: underline;
+      margin-top: 7px;
+      margin-bottom: -10px;
+    }
+    .courses-active h3 {
+      text-align: center;
+      margin-top: 30px;
+    }
+    span.back1 {
+      position: absolute;
+      top: -6px;
+      right: 12px;
+      font-size: 30px;
+      transform: rotate(45deg);
+    }
+
+    span.back2 {
+      position: absolute;
+      top: -6px;
+      left: 12px;
+      font-size: 30px;
+      transform: rotate(322deg);
+    }
+    .courses-active img{
+      width: 200px;
+      margin: auto;
+      display: block;
+    }
+    .backbtn {
+      width: 35px;
+      height: 35px;
+      background: #ffe1e1;
+      border: 1px solid #fd7878;
+      border-radius: 50%;
+      position: absolute;
+      right: 0;
+      top: -1px;
+      cursor: pointer;
+    }
+    .number-copy {
+      display: flex;
+      border: 1px solid #c3c3c3;
+      align-items: center;
+      height: 50px;
+      border-radius: 5px;
+      padding: 10px;
+    }
+    .number-copy input {
+      border: none;
+    }
+    .number-copy span {
+      background: #5e98e1;
+      padding: 8px;
+      color: #fff;
+      border-radius: 2px;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
 
-  <div class="times">
-    <div class="text">1 Minute Wait</div>
-    <div class="timer" id="countdown"></div>
-    <div class="links">https://my-sports.live</div>
-  </div>
+  <nav class="navbar navbar-expand-lg sticky-top">
+    <div class="container">
+      <a class="navbar-brand" href=""><img src="./img/logo.png" alt=""></a>
 
-    <script type="text/javascript">
-      atOptions = {
-        'key' : 'fe28a48b75ffd1a25c4e99c1163e5f29',
-        'format' : 'iframe',
-        'height' : 90,
-        'width' : 728,
-        'params' : {}
-      };
-    </script>
-    <script type="text/javascript" src="//www.highperformanceformat.com/fe28a48b75ffd1a25c4e99c1163e5f29/invoke.js"></script>
-    <script type="text/javascript">
-      atOptions = {
-        'key' : 'c4d8b17a4500e7db0e58abaade3b6821',
-        'format' : 'iframe',
-        'height' : 600,
-        'width' : 160,
-        'params' : {}
-      };
-    </script>
-    <script type="text/javascript" src="//www.highperformanceformat.com/c4d8b17a4500e7db0e58abaade3b6821/invoke.js"></script>
+      <div class="nav-menuandButoon">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
 
-    <script type="text/javascript">
-      atOptions = {
-        'key' : 'f67f13574b45421268b29b767ae974f2',
-        'format' : 'iframe',
-        'height' : 250,
-        'width' : 300,
-        'params' : {}
-      };
-    </script>
-    <script type="text/javascript" src="//www.highperformanceformat.com/f67f13574b45421268b29b767ae974f2/invoke.js"></script>
-    <script type="text/javascript">
-      atOptions = {
-        'key' : 'be623b863e8fb24d55255f85595c5397',
-        'format' : 'iframe',
-        'height' : 50,
-        'width' : 320,
-        'params' : {}
-      };
-    </script>
-    <script type="text/javascript" src="//www.highperformanceformat.com/be623b863e8fb24d55255f85595c5397/invoke.js"></script>
-    <script type="text/javascript">
-	  atOptions = {
-		'key' : '022a537b72b92703bdf44ada1eb3ea40',
-		'format' : 'iframe',
-		'height' : 300,
-		'width' : 160,
-		'params' : {}
-      };
-    </script>
-    <script type="text/javascript" src="//www.highperformanceformat.com/022a537b72b92703bdf44ada1eb3ea40/invoke.js"></script>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto align-items-lg-center">
+            <li class="nav-item"><a class="nav-link" href="">Home</a></li>
+            <li class="nav-item"><a class="nav-link">নামাজ</a></li>
+            <li class="nav-item"><a class="nav-link">রোজা</a></li>
+            <li class="nav-item"><a class="nav-link">হজ</a></li>
+            <li class="nav-item"><a class="nav-link">জাকাত</a></li>
+            <li class="nav-item ms-lg-3 mt-3 mt-lg-0">
+              <div id="signupBTN" class="btn btn-primary-custom">কুরআন শিখুন</div>
+              <!-- PROFILE -->
 
-    <script type="text/javascript">
-    atOptions = {
-      'key' : '1b987e15ab00c2d4ebf0bb54661b15a4',
-      'format' : 'iframe',
-      'height' : 60,
-      'width' : 468,
-      'params' : {}
-    };
-    </script>
-    <script type="text/javascript" src="//www.highperformanceformat.com/1b987e15ab00c2d4ebf0bb54661b15a4/invoke.js"></script>
-    <script async="async" data-cfasync="false" src="//pl27588637.revenuecpmgate.com/af68c603670deccce75b750091974893/invoke.js"></script>
-    <div id="container-af68c603670deccce75b750091974893"></div>
-    <script type='text/javascript' src='//pl27588591.revenuecpmgate.com/43/4e/b6/434eb6ded8ab93f1c3384d6dedbce1ce.js'></script>
-    <script type='text/javascript' src='//pl27588573.revenuecpmgate.com/7a/8e/3b/7a8e3b6de9d82c48c8105580cefa7598.js'></script>
-    <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-    import { getDatabase, ref, onValue, get, child, set} from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
+              <div class="profile" id="profile" style="display: none  !important;">
+                <div class="name-img">
+                  <div class="info">
+                  <span><b>Name : </b><span id="showName"></span></span>
+                  <span><b>ID : </b><span id="showPhone"></span></span>
+                  </div>
+                  <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">
+                </div>
+                <a href=""><button class="logout" onclick="logout()">Logout</button></a>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </nav>
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyCbLKuJsZ9du9hHBTUU5gfzN0Jxe7EQiXE",
-      authDomain: "live-cricket-47611.firebaseapp.com",
-      databaseURL: "https://live-cricket-47611-default-rtdb.firebaseio.com",
-      projectId: "live-cricket-47611",
-      storageBucket: "live-cricket-47611.firebasestorage.app",
-      messagingSenderId: "20357197788",
-      appId: "1:20357197788:web:e62f1d7d59b0129446e919",
-      measurementId: "G-R0P9EJ1KDJ"
-    };
+  <section class="hero sectionnone">
+    <div class="container">
+      <div class="row align-items-center g-5">
+        <div class="col-lg-6">
+          <h1>হে যুবক আমি তোমাকেই বলছি।</h1>
+          <h3>সহীহ শুদ্ধ করে কুরআন শিখুন এবং নামাজ প্রতিষ্ঠা করুন |</h3>
+          <a id="signuplink" class="btn btn-primary-custom">কুরআন শিখুন</a>
+        </div>
 
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
+        <div class="col-lg-6">
+          <img class="img-fluid"
+            src="https://chatgpt.com/backend-api/estuary/public_content/enc/eyJpZCI6Im1fNmEwNjVlYmU1YzE0ODE5MWEzMjhlYWMxNjZhZjQ1MmU6ZmlsZV8wMDAwMDAwMGE1ODg3MWZhYmRmZTE0ZTU2NjMxOTdjOCIsInRzIjoiMjA1ODciLCJwIjoicHlpIiwiY2lkIjoiMSIsInNpZyI6IjgwNDUxOTliYzcyZTNjNmQzNWYyNDcwNDIyZTdjMjg0MDUxNzQ3NTg2ZjE0NDU0YTNmNDk5OGVlYTc5ODYyNGIiLCJ2IjoiMCIsImdpem1vX2lkIjpudWxsLCJjcyI6bnVsbCwiY2RuIjpudWxsLCJmbiI6bnVsbCwiY2QiOm51bGwsImNwIjpudWxsLCJtYSI6bnVsbH0="
+            alt="Students">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-5 sectionnone" id="features">
+    <div class="container py-5">
+      <div class="section-title text-center">
+        <h2>ছাত্র ছাত্রীরা কেন আল কুরআন ভালোবাসে</h2>
+        <p>Modern learning tools designed for career growth and success.</p>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-md-6 col-lg-3">
+          <div class="feature-card text-center">
+            <div class="feature-icon mx-auto">📘</div>
+            <h4>Expert Teachers</h4>
+            <p>Learn from experienced instructors with practical knowledge.</p>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+          <div class="feature-card text-center">
+            <div class="feature-icon mx-auto">🎥</div>
+            <h4>Video Courses</h4>
+            <p>Watch high-quality lessons anytime on any device.</p>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+          <div class="feature-card text-center">
+            <div class="feature-icon mx-auto">📱</div>
+            <h4>Mobile Friendly</h4>
+            <p>Responsive design optimized for mobile learning.</p>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+          <div class="feature-card text-center">
+            <div class="feature-icon mx-auto">🏆</div>
+            <h4>Certificates</h4>
+            <p>Receive completion certificates for every course.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-5 sectionnone bg-white" id="courses">
+    <div class="container py-5">
+      <div class="section-title text-center">
+        <h2>বিশেষ অনলাইন কোর্স</h2>
+        <p>Explore high-quality programs taught by experienced instructors.</p>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-md-6 col-lg-4">
+          <div class="course-card">
+            <img src="https://static.vecteezy.com/system/resources/thumbnails/024/488/613/small/a-green-and-white-photo-of-a-holy-book-on-a-stand-3d-render-png.png" alt="Web Development">
+            <h4>কুরআন শিক্ষা</h4>
+            <p>Nurani Poddotite</p>
+            <div class="price">TK : 5</div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <div class="course-card">
+            <img src="https://thewayofsalafiyyah.com/wp-content/uploads/2015/05/namaz1.jpg?w=740" alt="UI UX">
+            <h4>নামাজ শিক্ষা</h4>
+            <p>Learn Namaj</p>
+            <div class="price">TK : Free</div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <div class="course-card">
+            <img src="https://media.ssyoutube.com/get?__sig=tqOFmmKnXg7IF9IBOlv-TA&__expires=1778811407&uri=https%3A%2F%2Fi.ytimg.com%2Fvi%2FJsCGfnMFitU%2Fhqdefault.jpg&referer=https%3A%2F%2Fwww.youtube.com%2F" alt="Marketing">
+            <h4>মাসআলা শিক্ষা</h4>
+            <p>Hadis Masala</p>
+            <div class="price">TK : Free</div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="course-card">
+            <img src="https://i0.wp.com/bestgrafix.com/wp-content/uploads/2025/05/Hajj-Mubarak.jpg?resize=1024%2C1024&ssl=1" alt="Marketing">
+            <h4>হজ নিয়ম কানুন শিক্ষা</h4>
+            <p>Hadis Masala</p>
+            <div class="price">TK : Free</div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="course-card">
+            <img src="https://www.dailysavvataralo.com/wp-content/uploads/2025/03/IMG-20250308-WA0007.jpg" alt="Marketing">
+            <h4>রোজা নিয়ম কানুন শিক্ষা</h4>
+            <p>Hadis Masala</p>
+            <div class="price">TK : Free</div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="course-card">
+            <img src="https://thumbs.dreamstime.com/b/illustration-muslim-children-giving-zakat-to-old-beggar-woman-sharing-others-month-ramadan-cute-cartoon-who-was-282269492.jpg" alt="Marketing">
+            <h4>জাকাত আদায় করো</h4>
+            <p>Hadis Masala</p>
+            <div class="price">TK : Free</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="stats sectionnone text-center">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-6 col-lg-3">
+          <div class="stat-number" data-target="1200">0</div>
+          <p>Students</p>
+        </div>
+
+        <div class="col-6 col-lg-3">
+          <div class="stat-number" data-target="85">0</div>
+          <p>Courses</p>
+        </div>
+
+        <div class="col-6 col-lg-3">
+          <div class="stat-number" data-target="45">0</div>
+          <p>Teachers</p>
+        </div>
+
+        <div class="col-6 col-lg-3">
+          <div class="stat-number pesent" data-target="99">0</div>
+          <p>Success Rate</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-5 sectionnone" id="testimonial">
+    <div class="container py-5">
+      <div class="section-title text-center">
+        <h2>ছাত্রদের সাফল্যের গল্প</h2>
+        <p>আমাদের প্ল্যাটফর্মে শিক্ষার্থীরা কেন শিখতে ভালোবাসে তা দেখুন ।</p>
+      </div>
+
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <div class="testimonial-card text-center">
+            <img src="https://thumbs.dreamstime.com/b/muslim-man-holding-book-learning-islamic-education-409395188.jpg" alt="Student">
+            <p class="mb-4">
+              “আমার শেখার অভিজ্ঞতাকে পুরোপুরি বদলে দিয়েছে। কোর্সগুলো আকর্ষণীয়, বাস্তবসম্মত এবং নতুনদের জন্য খুবই সহজবোধ্য।”
+            </p>
+            <h5>MD. Raiyan</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+    <section class="py-5 sectionnone" id="signupLogin">
+    <div class="container">
+
+    <!-- SIGNUP -->
+
+    <div class="form" id="signup">
+
+    <h2>Sign Up</h2>
+
+    <input type="text" id="fullname" placeholder="Full Name">
+
+    <input type="tel" id="phone" placeholder="Phone Number">
+
+    <input type="password" id="password" placeholder="Password">
+
+    <button onclick="signup()">
+    Create Account
+    </button>
+
+    <div class="msg" id="signupMsg"></div>
+
+    <div class="switch">
+    Already have account?
+    <span onclick="showLogin()">Login</span>
+    </div>
+
+    </div>
 
 
-    const today = new Date();
+    <!-- LOGIN -->
 
-    const yesterday = new Date();
-    yesterday.setDate(today.getDate() - 1); // subtract 1 day
+    <div class="form" id="login">
 
-    // Format yesterday's date
-    const yesterdayFormatted = yesterday.toLocaleDateString();
-    const todayDates = today.toLocaleDateString();
+    <h2>Login</h2>
 
-    const todayDate = todayDates.replace(/[/]/g, '');
-    const yesterdayDate = yesterdayFormatted.replace(/[/]/g, '');
+    <input type="tel" id="loginPhone"
+    placeholder="Phone Number">
 
-    // console.log(yesterdayDate);
-    // console.log(todayDate);
+    <input type="password"
+    id="loginPassword"
+    placeholder="Password">
 
-    // Upload to Firebase
-    async function uploadData() {
+    <button onclick="login()">
+    Login
+    </button>
 
-        const res = await fetch('https://api.ipify.org?format=json');
-        const data = await res.json();
-        const ip = data.ip;
-        // console.log(ip);
+    <div class="msg" id="loginMsg"></div>
 
-      const ips = ip;
-      const noDots = ips.replace(/\./g, ""); // Remove all dots
-      //   console.log(noDots);
-        
-      //   await set(ref(db, "activeUsers/monthly"), monthlyData);
-      //   await set(ref(db, "activeUsers/daily"), dailyData);
-      await set(ref(db, "TodayactiveUsers/" + todayDate + "/" + noDots), {
-        ip: ip
-      });
+    <div class="switch">
+    Don't have account?
+    <span onclick="showSignup()">Sign Up</span>
+    </div>
 
-      await set(ref(db, "VisitorsUsers/" + todayDate + "/" + noDots), {
-        ip: ip
-      });
-      
-    }
+    </div>
+    </div>
 
-    await uploadData();
+  </section>
+
+
+
+  <section class="py-5 dashboard bg-white" id="courses">
+    <div class="container py-5">
+      <div class="section-title text-center">
+        <h2>বিশেষ অনলাইন কোর্স</h2>
+        <p>Explore high-quality programs taught by experienced instructors.</p>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-md-6 col-lg-4">
+          <div class="course-card">
+            <img src="https://static.vecteezy.com/system/resources/thumbnails/024/488/613/small/a-green-and-white-photo-of-a-holy-book-on-a-stand-3d-render-png.png" alt="কুরআন শিক্ষা">
+            <input type="text" hidden value="কুরআন শিক্ষা">
+            <h4>কুরআন শিক্ষা</h4>
+            <p>Nurani Poddotite</p>
+            <div class="price">TK : 5</div>
+            <div class="statuse">In Active</div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <div class="course-card">
+            <img src="https://thewayofsalafiyyah.com/wp-content/uploads/2015/05/namaz1.jpg?w=740" alt="নামাজ শিক্ষা">
+            <input type="text" hidden value="নামাজ শিক্ষা">
+            <h4>নামাজ শিক্ষা</h4>
+            <p>Learn Namaj</p>
+            <div class="price">TK : Free</div>
+            <div class="statuse">In Active</div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <div class="course-card">
+            <img src="https://media.ssyoutube.com/get?__sig=tqOFmmKnXg7IF9IBOlv-TA&__expires=1778811407&uri=https%3A%2F%2Fi.ytimg.com%2Fvi%2FJsCGfnMFitU%2Fhqdefault.jpg&referer=https%3A%2F%2Fwww.youtube.com%2F" alt="মাসআলা শিক্ষা">
+            <input type="text" hidden value="মাসআলা শিক্ষা">
+            <h4>মাসআলা শিক্ষা</h4>
+            <p>Hadis Masala</p>
+            <div class="price">TK : Free</div>
+            <div class="statuse">In Active</div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="course-card">
+            <img src="https://i0.wp.com/bestgrafix.com/wp-content/uploads/2025/05/Hajj-Mubarak.jpg?resize=1024%2C1024&ssl=1" alt="হজ নিয়ম কানুন শিক্ষা">
+            <input type="text" hidden value="হজ নিয়ম কানুন শিক্ষা">
+            <h4>হজ নিয়ম কানুন শিক্ষা</h4>
+            <p>Hadis Masala</p>
+            <div class="price">TK : Free</div>
+            <div class="statuse">In Active</div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="course-card">
+            <img src="https://www.dailysavvataralo.com/wp-content/uploads/2025/03/IMG-20250308-WA0007.jpg" alt="রোজা নিয়ম কানুন শিক্ষা">
+            <input type="text" hidden value="রোজা নিয়ম কানুন শিক্ষা">
+            <h4>রোজা নিয়ম কানুন শিক্ষা</h4>
+            <p>Hadis Masala</p>
+            <div class="price">TK : Free</div>
+            <div class="statuse">In Active</div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="course-card">
+            <img src="https://thumbs.dreamstime.com/b/illustration-muslim-children-giving-zakat-to-old-beggar-woman-sharing-others-month-ramadan-cute-cartoon-who-was-282269492.jpg" alt="জাকাত আদায় করো">
+            <input type="text" hidden value="জাকাত আদায় করো">
+            <h4>জাকাত আদায় করো</h4>
+            <p>Hadis Masala</p>
+            <div class="price">TK : Free</div>
+            <div class="statuse">In Active</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- courses-active -->
+      <div class="courses-active"></div>
+    </div>
+  </section>
+
+
+
+  <section class="py-5" id="testimonial">
+    <div class="container py-5">
+      <div class="row justify-content-center">
+        <div class="col-lg-12">
+          <div class="testimonial-card text-center">
+            <div class="section-title text-center">
+              <h2>About</h2>
+              <p>আমাদের কিসু নিয়ম কানুন আছে ।</p>
+            </div>
+            <p>“আমার শেখার অভিজ্ঞতাকে পুরোপুরি বদলে দিয়েছে। কোর্সগুলো আকর্ষণীয়, বাস্তবসম্মত এবং নতুনদের জন্য খুবই সহজবোধ্য।”</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="text-center">
+    <div class="container">
+      <h2 class="mb-1">After School and Maktab</h2>
+      <p>তালিমুল কুরআন একাডেমি</p>
+      <p class="mt-1 mb-0">© 2026 -  <span id="year"></span> All Rights Reserved</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    const counters = document.querySelectorAll('[data-target]');
+
+    counters.forEach((counter,index)=>{
+
+        const updateCounter=()=>{
+
+            const target=+counter.getAttribute('data-target');
+
+            // remove % before calculation
+            const count=parseInt(counter.innerText);
+
+            const increment=target/100;
+
+            if(count<target){
+                const value=Math.ceil(count+increment);
+                // add % only to 3rd child
+                counter.innerText=
+                index===3 ? value + " %" : value;
+                setTimeout(updateCounter,20);
+            }else{
+                counter.innerText=
+                index===3 ? target + " %" : target;
+            }
+        }
+        updateCounter();
+    });
+
+    // Auto update year
+    document.getElementById("year").textContent =
+    new Date().getFullYear();
   </script>
-	<script>
-    document.querySelector('.times').style.height = window.innerHeight+'px';
-    let timeLeft = 60; // 1 minute = 60 seconds
 
-    function updateTimer() {
-      const minutes = Math.floor(timeLeft / 60);
-      const seconds = timeLeft % 60;
+  <script type="module">
 
-      document.getElementById("countdown").textContent =
-        String(seconds).padStart(2, "0");
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
 
-      if (timeLeft <= 0) {
-        clearInterval(timer);
-        document.getElementById("countdown").textContent = "0";
-        window.open('https://my-sports.live', '_blank');
-        
-      }
+import {getDatabase,ref,set,get,child}
+from "https://www.gstatic.com/firebasejs/12.2.1/firebase-database.js";
 
-      timeLeft--;
-    }
 
-    const timer = setInterval(updateTimer, 1000);
-    updateTimer();
-  </script>
+
+const firebaseConfig = {
+
+apiKey:"AIzaSyBTW2vmeP7rm95p2I7mrqpbky9YJEaNUgc",
+
+authDomain:"parsonalchatapp.firebaseapp.com",
+
+databaseURL:"https://parsonalchatapp-default-rtdb.firebaseio.com",
+
+projectId:"parsonalchatapp",
+
+storageBucket:"parsonalchatapp.firebasestorage.app",
+
+messagingSenderId:"401747590508",
+
+appId:"1:401747590508:web:dbc2d2b40fa52c1e9fc749"
+
+};
+
+
+const app=initializeApp(firebaseConfig);
+
+const db=getDatabase(app);
+
+
+window.showLogin=function(){
+
+document.getElementById("signup")
+.classList.remove("active");
+
+document.getElementById("login")
+.classList.add("active");
+
+}
+
+
+window.showSignup=function(){
+
+document.getElementById("login")
+.classList.remove("active");
+
+document.getElementById("signup")
+.classList.add("active");
+
+}
+
+
+
+window.signup=async function(){
+
+let name=
+document.getElementById("fullname").value;
+
+let phone=
+document.getElementById("phone").value;
+
+let pass=
+document.getElementById("password").value;
+
+
+if(name == "" || phone == "" || pass == "" ){
+
+signupMsg.innerHTML="Fill all fields";
+
+signupMsg.style.color="red";
+
+return;
+
+}
+
+
+try{
+
+await set(
+ref(db,"users/"+phone),
+{
+
+fullname:name,
+
+phone:phone,
+
+password:pass
+
+}
+);
+
+
+signupMsg.innerHTML=
+"Account Created";
+
+signupMsg.style.color=
+"green";
+
+
+setTimeout(()=>{
+
+showLogin()
+
+},1000)
+
+
+}catch(error){
+
+signupMsg.innerHTML=error.message;
+
+}
+
+}
+
+
+
+window.login=async function(){
+
+  let phone=document.getElementById("loginPhone").value;
+
+  let pass=document.getElementById("loginPassword").value;
+
+
+  const dbRef=ref(db);
+
+
+  try{const snapshot=await get(child(dbRef,"users/"+phone));
+
+
+  if(snapshot.exists()){
+
+    let data=snapshot.val();
+
+
+    if(data.password===pass){
+
+      localStorage.setItem("user",JSON.stringify(data));
+
+      document.getElementById("login").style.display="none";
+
+
+      document.getElementById("profile").style.display="block";
+      document.getElementById("signupBTN").style.display="none";
+      document.getElementById("signupLogin").classList.remove("top");
+
+
+      document.getElementById("showName").innerHTML=data.fullname;
+
+
+      document.getElementById("showPhone").innerHTML=data.phone;
+    
+      function bodyclear(){
+        document.querySelectorAll(".sectionnone").forEach((sitem)=>{
+          sitem.style.display="none";
+        })
+      }bodyclear();
+
+    }else{
+
+    loginMsg.innerHTML="Wrong password";
+
+    loginMsg.style.color="red";
+  }
+
+}else{
+
+loginMsg.innerHTML="No account found";
+
+loginMsg.style.color="red";
+
+}
+
+}catch(error){
+
+loginMsg.innerHTML=
+error.message;
+
+}
+
+}
+
+
+
+window.logout=function(){
+
+localStorage.removeItem("user");
+
+document.getElementById("profile").style.display="none  !important";
+
+
+document.getElementById("login").style.display="block";
+
+};
+
+window.onload=function(){
+  let user = JSON.parse(localStorage.getItem("user"));
+
+  if(user){
+
+    document.getElementById("signup").style.display="none";
+    document.getElementById("login").style.display="none";
+    document.getElementById("signupBTN").style.display="none";
+    document.getElementById("profile").style.display="block";
+    showName.innerHTML=user.fullname;
+    showPhone.innerHTML=user.phone;
+
+    function bodyclear(){
+        document.querySelectorAll(".sectionnone").forEach((sitem)=>{
+          sitem.style.display="none";
+        })
+    }bodyclear();
+
+    function courses(){
+      document.querySelectorAll(".course-card").forEach((sitem)=>{
+          sitem.addEventListener('click', function(){
+            window.scrollTo(0, 0);
+            document.querySelector(".courses-active").style.width = "100%";
+            document.querySelector(".courses-active").innerHTML = `
+                <div class="backbtn">
+                  <span class="back1">|</span>
+                  <span class="back2">|</span>
+                </div>
+                <h2>Course Active</h2>
+                <h3>${sitem.children[1].value}</h3>
+                <img id="courseimg" src="${sitem.children[0].src}" alt="">
+                <input type="text" readonly class="id" value="${"ID : " + user.phone}">
+                <input type="text" placeholder="Enter Your Phone Number" id="yourphoneNumber">
+                <input type="text" readonly class="name" value="${"Name : "+user.fullname}">
+                <input type="text" class="coursesName" readonly value="${"Course : " + sitem.children[1].value}">
+                <div class="number-copy">
+                  <input readonly type="text" id="phoneNumber" value="01770086174">
+                  <span id="copy">Copy</span>
+                </div>
+                <div class="number-copy">
+                  <input type="text" id="transitionId" placeholder="Paste Transition Id">
+                  <span id="paste">Paste</span>
+                </div>
+                <button>Course Active</button>
+            `;
+
+            function copyText(){
+              document.querySelector("#copy").addEventListener('click', function(){
+                // Get the text field
+                var copyText = document.getElementById("phoneNumber");
+
+                // Select the text field
+                copyText.select();
+                copyText.setSelectionRange(0, 99999); // For mobile devices
+
+                // Copy the text inside the text field
+                navigator.clipboard.writeText(copyText.value);
+                document.querySelector("#copy").innerHTML = "Copied";
+              
+              });
+            }copyText();
+            
+            function pasteText(){
+              const pasteButton = document.querySelector('span#paste');
+
+              pasteButton.addEventListener('click', async () => {
+                try {
+                  const text = await navigator.clipboard.readText()
+                  document.querySelector('input#transitionId').value += text;
+                  console.log('Text pasted.');
+                } catch (error) {
+                  console.log('Failed to read clipboard');
+                }
+              });
+            }pasteText();
+
+            function coursescloas(){
+              document.querySelector(".backbtn").addEventListener('click', function(){
+                document.querySelector(".courses-active").style.width = "0";
+                document.querySelector(".courses-active").innerHTML = "";
+              })
+            }coursescloas();
+
+            function request(){
+              document.querySelector(".courses-active button").addEventListener('click', function(){
+                const profileName = document.querySelector(".name").value;
+                const profileID = document.querySelector(".id").value;
+                const phoneNumber = document.querySelector("#yourphoneNumber").value;
+                const course = document.querySelector(".coursesName").value;
+                const coursesImg = document.querySelector("#courseimg").src;
+                const transictionID = document.querySelector("#transitionId").value;
+
+                setTimeout(() => {
+                  set(ref(db, "reqouest/" + profileID), {
+                    profileName : profileName,
+                    profileID : profileID,
+                    phoneNumber : phoneNumber,
+                    course : course,
+                    coursesImg : coursesImg,
+                    transictionID : transictionID
+
+                  })
+                  document.querySelector(".courses-active button").innerHTML = "Coures Active Request"
+                }, 3000);
+              })
+
+            }request();
+          })
+        })
+    }courses();
+  }
+
+}
+
+function sltoggle(){
+  document.querySelector("#signupBTN").addEventListener('click', function(){
+    document.getElementById("signup").classList.toggle("active");
+    document.getElementById("signupLogin").classList.toggle("top");
+  });
+
+  document.querySelector("a#signuplink").addEventListener('click', function(){
+    document.getElementById("signup").classList.toggle("active");
+    document.getElementById("signupLogin").classList.toggle("top");
+  });
+}sltoggle()
+
+
+  
+</script>
+
 </body>
 </html>
-
