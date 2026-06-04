@@ -107,7 +107,6 @@ border-collapse:collapse;
 th,td{
 padding:12px;
 text-align:left;
-border-bottom:1px solid #eee;
 }
 
 th{
@@ -159,19 +158,155 @@ display:none;
 }
 }
 </style>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#f4f6f9;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+}
+
+h1{
+    text-align:center;
+    margin-bottom:20px;
+}
+
+.user-list{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:15px;
+}
+
+.card{
+    background:#fff;
+    padding:15px;
+    border-radius:10px;
+    box-shadow:0 2px 8px rgba(0,0,0,.1);
+}
+
+.card h3{
+    margin-bottom:8px;
+    color:#333;
+}
+
+.card p{
+    color:#666;
+    margin:4px 0;
+}
+
+.loading{
+    text-align:center;
+    font-size:18px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th,td{
+    padding:12px;
+    text-align:center;
+}
+tr {
+    border: 1px solid #b9b9b9;
+}
+th{
+    background:#2563eb;
+    color:#fff;
+}
+
+td img{
+    width:50px;
+    height:50px;
+    border-radius:50%;
+    object-fit:cover;
+}
+
+.uersActive{
+  display: block !important;
+}
+span.status.courseActive {
+    background: #ffc2c2;
+    color: red;
+    cursor: pointer;
+}
+</style>
 </head>
 <body>
+
+  <!-- Login / Signup -->
+<div id="authContainer" style="
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:#f4f6f9;
+display:flex;
+justify-content:center;
+align-items:center;
+z-index:9999;
+">
+
+<div style="
+width:350px;
+background:#fff;
+padding:25px;
+border-radius:15px;
+box-shadow:0 3px 15px rgba(0,0,0,.1);
+">
+
+<h2 id="formTitle">Admin Login</h2>
+
+<input type="email" id="email" placeholder="Email"
+style="width:100%;padding:12px;margin:10px 0;">
+
+<input type="password" id="password" placeholder="Password"
+style="width:100%;padding:12px;margin:10px 0;">
+
+<button id="authBtn"
+style="
+width:100%;
+padding:12px;
+background:#2563eb;
+color:white;
+border:none;
+border-radius:8px;
+cursor:pointer;
+">
+Login
+</button>
+
+<p style="margin-top:15px;text-align:center;">
+<span id="toggleText">Create Admin Account</span>
+</p>
+
+</div>
+</div>
+
 
 <div class="dashboard">
 
 <div class="sidebar">
 <h2>Admin Panel</h2>
 <ul>
-<li>Dashboard</li>
-<li>Users</li>
-<li>Courses</li>
-<li>Reports</li>
-<li>Settings</li>
+<li class="dashboardHome">Dashboard</li>
+<li class="users">Users</li>
+<li class="course">Courses</li>
+<li class="reports">Reports</li>
+<li class="settings">Settings</li>
 </ul>
 </div>
 
@@ -182,70 +317,119 @@ display:none;
 <p>Welcome Admin</p>
 </div>
 
+
+
+
+<div class="container">
+    <h1>All Users</h1>
+
+    <div id="loading" class="loading">
+        Loading users...
+    </div>
+
+    <div id="userList" class="user-list"></div>
+</div>
+
+
+
+
+
+
 <div class="cards">
 
-<div class="card">
-<h3>Total Users</h3>
-<div class="number" id="users">0</div>
+  <div class="card">
+    <h3>Total Users</h3>
+    <div class="number" id="users">0</div>
+  </div>
+
+  <div class="card">
+    <h3>Active Users</h3>
+    <div class="number" id="active">0</div>
+  </div>
+
+  <div class="card">
+    <h3>Total Courses</h3>
+    <div class="number" id="courses">0</div>
+  </div>
+
+  <div class="card">
+    <h3>Completed Courses</h3>
+    <div class="number" id="completed">0</div>
+  </div>
+
 </div>
 
-<div class="card">
-<h3>Active Users</h3>
-<div class="number" id="active">0</div>
+
+            <div class="table-box allUsers" style="display: none;">
+              <h2 style="margin-bottom:15px;">All Users</h2>
+
+              <table>
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Phone Number</th>
+                    <th>User : ID</th>
+                    <th>Profile Picture</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  
+                </tbody>
+
+              </table>
+            </div>
+
+
+<div class="table-box Enrolecourse">
+  <h2 style="margin-bottom:15px;">Course Enrole</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Users Name</th>
+        <th>Course Name</th>
+        <th>User : id</th>
+        <th>Payment : id</th>
+        <th>Course picture</th>
+        <th>Course Status</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr>
+        <td>Rahman</td>
+        <td>Quran</td>
+        <td>454544545</td>
+        <td><img src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png' alt=""></td>
+        <td><span class="status courseActive">Request</span></td>
+      </tr>
+    </tbody>
+
+  </table>
 </div>
 
-<div class="card">
-<h3>Total Courses</h3>
-<div class="number" id="courses">0</div>
+
+<div class="table-box acceptCourseList">
+  <h2 style="margin-bottom:15px;">Recent Users</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Course</th>
+        <th>User id</th>
+        <th>Transiction id</th>
+        <th>Course Pictuer</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+
+    <tbody></tbody>
+
+  </table>
 </div>
 
-<div class="card">
-<h3>Completed Courses</h3>
-<div class="number" id="completed">0</div>
-</div>
-
-</div>
-
-<div class="table-box">
-<h2 style="margin-bottom:15px;">Recent Users</h2>
-
-<table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Course</th>
-<th>Status</th>
-</tr>
-</thead>
-
-<tbody>
-<tr>
-<td>Rahman</td>
-<td>HTML & CSS</td>
-<td><span class="status active">Active</span></td>
-</tr>
-
-<tr>
-<td>Karim</td>
-<td>JavaScript</td>
-<td><span class="status active">Active</span></td>
-</tr>
-
-<tr>
-<td>Hasan</td>
-<td>React JS</td>
-<td><span class="status inactive">Inactive</span></td>
-</tr>
-
-<tr>
-<td>Jahid</td>
-<td>Firebase</td>
-<td><span class="status active">Active</span></td>
-</tr>
-</tbody>
-
-</table>
-</div>
 
 <div class="progress-box">
 <h2>Course Progress</h2>
@@ -255,12 +439,30 @@ display:none;
 <div class="progress-bar" id="progressBar"></div>
 </div>
 </div>
-
 </div>
 
 </div>
 
-<script>
+<table>
+    <thead>
+        <tr>
+            <th>Field</th>
+            <th>Value</th>
+        </tr>
+    </thead>
+    <tbody id="requestTable"></tbody>
+</table>
+
+<li onclick="logout()">Logout</li>
+
+<script type="module">
+
+document.querySelector("li.dashboardHome").addEventListener('click', function(){
+  window.location.href = "/admin";
+})
+document.querySelector("li.users").addEventListener('click', function(){
+  document.querySelector(".table-box.allUsers").classList.toggle('uersActive');
+})
 function animateValue(id, target){
 let value = 0;
 
@@ -275,15 +477,322 @@ clearInterval(interval);
 },20);
 }
 
-animateValue("users",1250);
-animateValue("active",986);
-animateValue("courses",48);
-animateValue("completed",31);
 
 setTimeout(()=>{
 document.getElementById("progressBar").style.width="78%";
 document.getElementById("progressText").innerText="78%";
 },500);
+
+
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+getAuth,
+createUserWithEmailAndPassword,
+signInWithEmailAndPassword,
+onAuthStateChanged,
+signOut
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+import { getDatabase, onValue, push, ref,set } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+/* Firebase Config */
+const firebaseConfig = {
+
+apiKey:"AIzaSyBTW2vmeP7rm95p2I7mrqpbky9YJEaNUgc",
+
+authDomain:"parsonalchatapp.firebaseapp.com",
+
+databaseURL:"https://parsonalchatapp-default-rtdb.firebaseio.com",
+
+projectId:"parsonalchatapp",
+
+storageBucket:"parsonalchatapp.firebasestorage.app",
+
+messagingSenderId:"401747590508",
+
+appId:"1:401747590508:web:dbc2d2b40fa52c1e9fc749"
+
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getDatabase(app);
+
+let loginMode = true;
+
+const authBtn = document.getElementById("authBtn");
+const toggleText = document.getElementById("toggleText");
+
+toggleText.onclick = () => {
+
+loginMode = !loginMode;
+
+document.getElementById("formTitle").innerText =
+loginMode ? "Admin Login" : "Admin Signup";
+
+authBtn.innerText =
+loginMode ? "Login" : "Signup";
+
+toggleText.innerText =
+loginMode
+? "Create Admin Account"
+: "Already have account? Login";
+
+};
+
+authBtn.onclick = async () => {
+
+const email = document.getElementById("email").value;
+const password = document.getElementById("password").value;
+
+try{
+
+if(loginMode){
+
+await signInWithEmailAndPassword(
+auth,
+email,
+password
+);
+
+}else{
+
+const userCredential =
+await createUserWithEmailAndPassword(
+auth,
+email,
+password
+);
+
+await set(
+ref(db,'admins/'+userCredential.user.uid),
+{
+email:email,
+createdAt:Date.now()
+});
+
+alert("Admin Created");
+
+}
+
+}catch(err){
+
+alert(err.message);
+
+}
+
+};
+
+onAuthStateChanged(auth,(user)=>{
+
+if(user){
+
+document.getElementById(
+"authContainer"
+).style.display="none";
+
+}else{
+
+document.getElementById(
+"authContainer"
+).style.display="flex";
+
+}
+
+});
+
+window.logout = ()=>{
+
+signOut(auth);
+
+};
+
+const userList = document.querySelector(".allUsers table tbody");
+const loading = document.getElementById("loading");
+
+onValue(ref(db, "users"), (snapshot) => {
+    loading.style.display = "none";
+    userList.innerHTML = "";
+
+    if (!snapshot.exists()) {
+        userList.innerHTML = `
+        <tr>
+            <td colspan="4" style="text-align:center;">
+                No users found
+            </td>
+        </tr>`;
+        return;
+    }
+
+    let totalUsers = 0;
+
+    snapshot.forEach((child) => {
+
+        totalUsers++;
+
+        const user = child.val();
+        
+
+        const row = document.createElement("tr");
+
+        row.innerHTML = `
+            <td>${user.fullname || "No Name"}</td>
+            <td>${user.phone || "N/A"}</td>
+            <td>${child.key}</td>
+            <td>
+                <img
+                src="${user.photoURL || 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'}"
+                width="50">
+            </td>
+        `;
+
+        userList.appendChild(row);
+    });
+
+    document.getElementById("users").innerText = totalUsers;
+  animateValue("users",totalUsers);
+
+  animateValue("active",10);
+
+
+    
+});
+
+
+const enroleCourseList = document.querySelector(".Enrolecourse table tbody");
+
+onValue(ref(db, "reqouest/"), (snapshot) => {
+    loading.style.display = "none";
+    enroleCourseList.innerHTML = "";
+    
+
+    if (!snapshot.exists()) {
+        enroleCourseList.innerHTML = `
+        <tr>
+            <td colspan="4" style="text-align:center;">
+                No users found
+            </td>
+        </tr>`;
+        return;
+    }
+
+    let totalCours = 0;
+
+    snapshot.forEach((child) => {
+      
+        totalCours++;
+      
+        const user = child.val();
+        
+        const row = document.createElement("tr");
+
+        row.innerHTML = `
+            <td>${user.profileName || "No Name"}</td>
+            <input type="text" readonly class="setProfilName" hidden value="${user.profileName}">
+            <td>${user.course || "N/A"}</td>
+            <input type="text" readonly class="setCourseName" hidden value="${user.course}">
+            <td>${user.profileID}</td>
+            <td>${user.transictionID}</td>
+            <input type="text" readonly class="setTransictionID" hidden value="${user.transictionID}">
+            <input type="text" readonly class="setProfileID" hidden value="${user.profileID}">
+            <td>
+                <img
+                src="${user.coursesImg || 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'}"
+                width="50">
+            </td>
+            <input type="text" readonly class="setcourseImg" hidden value="${user.coursesImg}">
+            <td><span class="status courseActive">Request</span></td>
+        `;
+
+        enroleCourseList.appendChild(row);
+
+
+    });
+
+    document.getElementById("users").innerText = totalCours;
+    animateValue("courses",totalCours);
+
+
+    document.querySelectorAll("span.status").forEach(sing=>{
+      sing.addEventListener('click', function(){
+        requestAccept()
+        window.location.href = "/admin";
+      })
+    });
+      function requestAccept(){
+        document.querySelectorAll(".Enrolecourse table tbody tr").forEach(e =>{
+          e.addEventListener('click', function(){
+            
+            const newUserRef = push(ref(db, "reqouestAccept/"));
+
+              set(newUserRef, {
+                profileName : e.children[1].value,
+                course : e.children[3].value,
+                trsnsictionID : e.children[6].value,
+                profileID : e.children[7].value,
+                coursesImg : e.children[9].value
+                });
+            
+          })
+          
+        })
+      }
+});
+
+
+
+
+const acceptCourseList = document.querySelector(".acceptCourseList table tbody");
+
+onValue(ref(db, "reqouestAccept/"), (snapshot) => {
+    loading.style.display = "none";
+    acceptCourseList.innerHTML = "";
+    
+
+    if (!snapshot.exists()) {
+        acceptCourseList.innerHTML = `
+        <tr>
+            <td colspan="4" style="text-align:center;">
+                No users found
+            </td>
+        </tr>`;
+        return;
+    }
+
+    let totalCoursComplet = 0;
+
+    snapshot.forEach((child) => {
+      
+        totalCoursComplet++;
+      
+        const user = child.val();
+        
+        const row = document.createElement("tr");
+
+        row.innerHTML = `
+            <td>${user.profileName || "No Name"}</td>
+            <td>${user.course || "N/A"}</td>
+            <td>${user.profileID}</td>
+            <td>${user.trsnsictionID}</td>
+            <td>
+                <img
+                src="${user.coursesImg || 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'}"
+                width="50">
+            </td>
+            <td><span class="status active">Active</span></td>
+        `;
+
+        acceptCourseList.appendChild(row);
+
+
+    });
+
+    document.getElementById("users").innerText = totalCoursComplet;
+    animateValue("completed",totalCoursComplet);
+});
+
 </script>
 
 </body>
