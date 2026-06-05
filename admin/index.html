@@ -97,6 +97,7 @@ padding:20px;
 border-radius:15px;
 box-shadow:0 3px 10px rgba(0,0,0,.1);
 overflow-x:auto;
+margin: 20px;
 }
 
 table{
@@ -123,6 +124,7 @@ font-size:12px;
 
 .active{
 background:#22c55e;
+cursor: pointer;
 }
 
 .inactive{
@@ -338,6 +340,21 @@ Login
 <div class="cards">
 
   <div class="card">
+    <h3>Total Balance</h3>
+    <div class="number" id="balance">0</div>
+  </div>
+
+  <div class="card">
+    <h3>Addmition fee</h3>
+    <div class="number" id="addmitionfee">0</div>
+  </div>
+
+  <div class="card">
+    <h3>Course By</h3>
+    <div class="number" id="courseBy">0</div>
+  </div>
+
+  <div class="card">
     <h3>Total Users</h3>
     <div class="number" id="users">0</div>
   </div>
@@ -348,7 +365,7 @@ Login
   </div>
 
   <div class="card">
-    <h3>Total Courses</h3>
+    <h3>Courses Pending</h3>
     <div class="number" id="courses">0</div>
   </div>
 
@@ -495,23 +512,17 @@ onAuthStateChanged,
 signOut
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-import { getDatabase, onValue, push, ref,set } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+import { getDatabase, onValue, remove, push, ref,set } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
 /* Firebase Config */
 const firebaseConfig = {
 
 apiKey:"AIzaSyBTW2vmeP7rm95p2I7mrqpbky9YJEaNUgc",
-
 authDomain:"parsonalchatapp.firebaseapp.com",
-
 databaseURL:"https://parsonalchatapp-default-rtdb.firebaseio.com",
-
 projectId:"parsonalchatapp",
-
 storageBucket:"parsonalchatapp.firebasestorage.app",
-
 messagingSenderId:"401747590508",
-
 appId:"1:401747590508:web:dbc2d2b40fa52c1e9fc749"
 
 };
@@ -683,8 +694,9 @@ onValue(ref(db, "reqouest/"), (snapshot) => {
     snapshot.forEach((child) => {
       
         totalCours++;
-      
+        
         const user = child.val();
+        
         
         const row = document.createElement("tr");
 
@@ -703,7 +715,7 @@ onValue(ref(db, "reqouest/"), (snapshot) => {
                 width="50">
             </td>
             <input type="text" readonly class="setcourseImg" hidden value="${user.coursesImg}">
-            <td><span class="status courseActive">Request</span></td>
+            <td><span class="status courseActive" data-id="${child.key}">Request</span></td>
         `;
 
         enroleCourseList.appendChild(row);
@@ -714,31 +726,37 @@ onValue(ref(db, "reqouest/"), (snapshot) => {
     document.getElementById("users").innerText = totalCours;
     animateValue("courses",totalCours);
 
+    function requestAccept(){
+      document.querySelectorAll(".Enrolecourse table tbody tr").forEach(single =>{
+        single.addEventListener('click', (e) =>{
 
-    document.querySelectorAll("span.status").forEach(sing=>{
-      sing.addEventListener('click', function(){
-        requestAccept()
-        window.location.href = "/admin";
-      })
-    });
-      function requestAccept(){
-        document.querySelectorAll(".Enrolecourse table tbody tr").forEach(e =>{
-          e.addEventListener('click', function(){
-            
-            const newUserRef = push(ref(db, "reqouestAccept/"));
+          if(e.target.classList.contains("status")){
 
-              set(newUserRef, {
-                profileName : e.children[1].value,
-                course : e.children[3].value,
-                trsnsictionID : e.children[6].value,
-                profileID : e.children[7].value,
-                coursesImg : e.children[9].value
-                });
+            const id = e.target.dataset.id;
+            // console.log(id);
             
-          })
-          
+            remove(ref(db, "reqouest/" + id))
+            .then(() => {
+                // alert("Data Deleted");
+            })
+          }
+            
+          const newUserRef = push(ref(db, "reqouestAccept/"));
+
+          set(newUserRef, {
+            profileName : single.children[1].value,
+            course : single.children[3].value,
+            trsnsictionID : single.children[6].value,
+            profileID : single.children[7].value,
+            coursesImg : single.children[9].value
+          });
+               
         })
-      }
+
+      })  
+          
+    }requestAccept();
+
 });
 
 
@@ -791,8 +809,11 @@ onValue(ref(db, "reqouestAccept/"), (snapshot) => {
 
     document.getElementById("users").innerText = totalCoursComplet;
     animateValue("completed",totalCoursComplet);
-});
 
+});
+  animateValue("addmitionfee",100);
+  animateValue("courseBy",100);
+  animateValue("balance",200);
 </script>
 
 </body>
