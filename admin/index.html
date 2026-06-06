@@ -244,6 +244,23 @@ span.status.courseActive {
     color: red;
     cursor: pointer;
 }
+
+button.UnVeryfid {
+  padding: 5px;
+  background: #ffc4c4;
+  color: red;
+  border: 1px solid red;
+  border-radius: 4px;
+  cursor: pointer;
+}
+button.Veryfid{
+  padding: 5px;
+  background: rgb(21, 128, 21);
+  color: #fff;
+  border: 1px solid;
+  border-radius: 4px;
+  cursor: pointer;
+}
 </style>
 </head>
 <body>
@@ -385,8 +402,10 @@ Login
                   <tr>
                     <th>Name</th>
                     <th>Phone Number</th>
+                    <th>Pement ID</th>
                     <th>User : ID</th>
                     <th>Profile Picture</th>
+                    <th>Account Status</th>
                   </tr>
                 </thead>
 
@@ -512,7 +531,7 @@ onAuthStateChanged,
 signOut
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-import { getDatabase, onValue, remove, push, ref,set } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+import { getDatabase, onValue, remove, update, push, ref,set } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
 /* Firebase Config */
 const firebaseConfig = {
@@ -651,15 +670,31 @@ onValue(ref(db, "users"), (snapshot) => {
         row.innerHTML = `
             <td>${user.fullname || "No Name"}</td>
             <td>${user.phone || "N/A"}</td>
+            <td>${user.pementID || "N/A"}</td>
             <td>${child.key}</td>
             <td>
                 <img
                 src="${user.photoURL || 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'}"
                 width="50">
             </td>
+            <td><button data-id="${child.key}" class="${user.veryfi || "UnVeryfid"} verify">${user.veryfi || "UnVeryfid"}</button></td>
         `;
 
         userList.appendChild(row);
+
+        document.querySelectorAll(".allUsers table tbody tr").forEach(single =>{
+          single.addEventListener('click', (e) =>{
+            if(e.target.classList.contains("verify")){
+              const id = e.target.dataset.id;
+              
+              update(ref(db, "users/" + id),{
+                veryfi : "Veryfid"
+              })
+              
+            }
+          })
+        });
+        
     });
 
     document.getElementById("users").innerText = totalUsers;
