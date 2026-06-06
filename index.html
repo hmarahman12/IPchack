@@ -398,6 +398,16 @@
       border-radius: 2px;
       cursor: pointer;
     }
+
+    .courceHideen {
+      background: #ffc4c4;
+      font-size: 15px;
+      color: #fb1d1d;
+      padding: 10px;
+      border-radius: 5px;
+      margin: 10px 0;
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -697,11 +707,14 @@
         <span class="back2">|</span>
       </div>
 
-    <h2>Sign Up</h2>
+    <h2>ভর্তি হন</h2>
 
     <input type="text" id="fullname" placeholder="Full Name">
 
-    <input type="tel" id="phone" placeholder="Phone Number">
+    <input type="text" id="phone" placeholder="Phone Number">
+    <input type="text" id="pementNumber" placeholder="Pement Number">
+    <input type="text" id="pementAmount" readonly value="150">
+    <input type="text" id="pementID" placeholder="Transiction ID">
 
     <input type="password" id="password" placeholder="Password">
     <input type="text" id="referel" value="1234567891012">
@@ -816,7 +829,7 @@
 import { initializeApp }
 from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
 
-import {getDatabase,ref,set,get,child}
+import {getDatabase,ref,set,get,push,child}
 from "https://www.gstatic.com/firebasejs/12.2.1/firebase-database.js";
 
 
@@ -873,12 +886,15 @@ window.signup=async function(){
 let name = document.getElementById("fullname").value;
 
 let phone = document.getElementById("phone").value;
+let pementNumber = document.getElementById("pementNumber").value;
+let pementAmount = document.getElementById("pementAmount").value;
+let pementID = document.getElementById("pementID").value;
 
 let pass = document.getElementById("password").value;
 let referel = document.getElementById("referel").value;
 
 
-if(name == "" || phone == "" || pass == "" || referel == "" ){
+if(name == "" || phone == "" || pementNumber == "" || pementAmount == "" || pementID == "" || pass == "" || referel == "" ){
 
 signupMsg.innerHTML="Fill all fields";
 
@@ -893,29 +909,24 @@ ref(db,"users/"+phone),
 {
 
 fullname:name,
-
 phone:phone,
-
+pementNumber:pementNumber,
+pementAmount:pementAmount,
+pementID:pementID,
 password:pass,
 referel:referel
 
 }
 );
 
-await set(
-ref(db,"affilate/"+referel),
-{
 
-fullname:name,
-
-phone:phone,
-
-password:pass,
-referel:referel
-
-}
-);
-
+const newUserRef = push(ref(db, "affilate/"+referel));
+          set(newUserRef, {
+            fullname:name,
+            phone:phone,
+            password:pass,
+            referel:referel
+          });
 
 signupMsg.innerHTML=
 "Account Created";
@@ -960,34 +971,40 @@ window.login=async function(){
 
 
     if(data.password===pass){
+      if(data.veryfi === "Veryfid"){
+        
+        localStorage.setItem("user",JSON.stringify(data));
 
-      localStorage.setItem("user",JSON.stringify(data));
-
-      document.getElementById("login").style.display="none";
-
-
-      document.getElementById("profile").style.display="block";
-      document.getElementById("signupBTN").style.display="none";
-      document.getElementById("signupLogin").classList.remove("top");
+        document.getElementById("login").style.display="none";
 
 
-      document.getElementById("showName").innerHTML=data.fullname;
+        document.getElementById("profile").style.display="block";
+        document.getElementById("signupBTN").style.display="none";
+        document.getElementById("signupLogin").classList.remove("top");
 
 
-      document.getElementById("showPhone").innerHTML=data.phone;
-    
-      function bodyclear(){
-        document.querySelectorAll(".sectionnone").forEach((sitem)=>{
-          sitem.style.display="none";
-        })
-      }bodyclear();
+        document.getElementById("showName").innerHTML=data.fullname;
 
+
+        document.getElementById("showPhone").innerHTML=data.phone;
+      
+        function bodyclear(){
+          document.querySelectorAll(".sectionnone").forEach((sitem)=>{
+            sitem.style.display="none";
+          })
+        }bodyclear();
+
+      }else{
+
+        loginMsg.innerHTML="Invalid Account!";
+
+        loginMsg.style.color="red";
+      }
     }else{
+      loginMsg.innerHTML="Wrong password or Number";
 
-    loginMsg.innerHTML="Wrong password";
-
-    loginMsg.style.color="red";
-  }
+      loginMsg.style.color="red";
+    }
 
 }else{
 
@@ -1051,9 +1068,12 @@ window.onload=function(){
                 <h3>${sitem.children[1].value}</h3>
                 <img id="courseimg" src="${sitem.children[0].src}" alt="">
                 <input type="text" readonly class="id" value="${"ID : " + user.phone}">
+                <input type="text" readonly class="setId" hidden value="${ user.phone}">
                 <input type="text" placeholder="Enter Your Phone Number" id="yourphoneNumber">
                 <input type="text" readonly class="name" value="${"Name : "+user.fullname}">
+                <input type="text" readonly class="setName" hidden value="${user.fullname}">
                 <input type="text" class="coursesName" readonly value="${"Course : " + sitem.children[1].value}">
+                <input type="text" class="setCoursesName" readonly hidden value="${sitem.children[1].value}">
                 <div class="number-copy">
                   <input readonly type="text" id="phoneNumber" value="Payment : 01767767606">
                   <span id="copy">Copy</span>
@@ -1063,6 +1083,7 @@ window.onload=function(){
                   <span id="paste">Paste</span>
                 </div>
                 <button>Course Active</button>
+                <div class="courceHideen"></div>
             `;
 
             function copyText(){
@@ -1104,25 +1125,50 @@ window.onload=function(){
 
             function request(){
               document.querySelector(".courses-active button").addEventListener('click', function(){
-                const profileName = document.querySelector(".name").value;
-                const profileID = document.querySelector(".id").value;
+                const profileName = document.querySelector(".setName").value;
+                const profileID = document.querySelector(".setId").value;
                 const phoneNumber = document.querySelector("#yourphoneNumber").value;
-                const course = document.querySelector(".coursesName").value;
+                const course = document.querySelector(".setCoursesName").value;
                 const coursesImg = document.querySelector("#courseimg").src;
                 const transictionID = document.querySelector("#transitionId").value;
 
-                setTimeout(() => {
-                  set(ref(db, "reqouest/" + profileID), {
-                    profileName : profileName,
-                    profileID : profileID,
-                    phoneNumber : phoneNumber,
-                    course : course,
-                    coursesImg : coursesImg,
-                    transictionID : transictionID
+                if(phoneNumber !== ""){
+                  if(transictionID !== ""){
+                    setTimeout(() => {
 
-                  })
-                  document.querySelector(".courses-active button").innerHTML = "Coures Active Request"
-                }, 3000);
+                      
+
+                      const newUserRef = push(ref(db, "reqouest"));
+
+                        set(newUserRef, {
+                          profileName : profileName,
+                          profileID : profileID,
+                          phoneNumber : phoneNumber,
+                          course : course,
+                          coursesImg : coursesImg,
+                          transictionID : transictionID,
+                      });
+
+                      // set(ref(db, "reqouest/" + profileID), {
+                      //   profileName : profileName,
+                      //   profileID : profileID,
+                      //   phoneNumber : phoneNumber,
+                      //   course : course,
+                      //   coursesImg : coursesImg,
+                      //   transictionID : transictionID
+                      // });
+                            
+                      document.querySelector(".courses-active button").innerHTML = "Coures Active Request";
+                      document.querySelector(".courceHideen").style.display = "none";
+                    }, 1000);
+                  }else{
+                    document.querySelector(".courceHideen").style.display = "block";
+                    document.querySelector(".courceHideen").innerHTML = "Enter Your Transiction ID";
+                  }
+                }else{
+                  document.querySelector(".courceHideen").style.display = "block";
+                  document.querySelector(".courceHideen").innerHTML = "Enter Your Phone Number";
+                }
               })
 
             }request();
