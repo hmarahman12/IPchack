@@ -223,6 +223,7 @@
       button{
       width:100%;
       padding:12px;
+      margin: 10px 0;
       border:none;
       border-radius:10px;
       background:#4facfe;
@@ -331,6 +332,7 @@
 
     .container.py-5 {
       position: relative;
+      margin: 30px auto;
     }
     .courses-active {
       border: 1px solid #3affffc7;
@@ -408,6 +410,14 @@
       margin: 10px 0;
       display: none;
     }
+
+    .statuse.Active {
+      background: #3fbb54;
+      color: #fff;
+      border: 1px solid;
+    }
+
+
   </style>
 </head>
 <body>
@@ -415,6 +425,7 @@
   <nav class="navbar navbar-expand-lg sticky-top">
     <div class="container">
       <a class="navbar-brand" href=""><img src="./img/logo.png" alt=""></a>
+      <div class="dashBord"></div>
 
       <div class="nav-menuandButoon">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -467,6 +478,25 @@
     </div>
   </section>
 
+
+    <section class="py-5 dashboard bg-white" id="logincourses" style="display: none;">
+    <div class="container py-5">
+      <div class="section-title text-center">
+        <h2>বিশেষ অনলাইন কোর্স</h2>
+        <p>Explore high-quality programs taught by experienced instructors.</p>
+      </div>
+
+      <div id="courseList" class="row g-4">
+
+      </div>
+
+      <!-- courses-active -->
+      <div class="courses-active"></div>
+    </div>
+  </section>
+
+
+
   <section class="py-5 dashboard bg-white" id="courses">
     <div class="container py-5">
       <div class="section-title text-center">
@@ -474,7 +504,7 @@
         <p>Explore high-quality programs taught by experienced instructors.</p>
       </div>
 
-      <div class="row g-4">
+      <div id="courseList" class="row g-4">
         <div class="col-md-6 col-lg-4">
           <div class="course-card">
             <img src="https://static.vecteezy.com/system/resources/thumbnails/024/488/613/small/a-green-and-white-photo-of-a-holy-book-on-a-stand-3d-render-png.png" alt="কুরআন শিক্ষা">
@@ -713,12 +743,18 @@
 
     <input type="text" id="phone" placeholder="Phone Number">
     <input type="text" id="pementNumber" placeholder="Pement Number">
+    <div class="number-copy">
+      <input readonly type="text" id="phoneNumber" value="01767767606">
+      <span id="copy">Copy</span>
+    </div>
     <input type="text" id="pementAmount" readonly value="150">
-    <input type="text" id="pementID" placeholder="Transiction ID">
 
     <input type="password" id="password" placeholder="Password">
     <input type="text" id="referel" value="1234567891012">
-
+    <div class="number-copy">
+      <input type="text" id="pementID" placeholder="Transiction ID">
+      <span id="paste">Paste</span>
+    </div>
     <button onclick="signup()">
     Create Account
     </button>
@@ -829,7 +865,7 @@
 import { initializeApp }
 from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
 
-import {getDatabase,ref,set,get,push,child}
+import {getDatabase,ref,set,get,update,onValue,push,child}
 from "https://www.gstatic.com/firebasejs/12.2.1/firebase-database.js";
 
 
@@ -880,6 +916,38 @@ document.getElementById("signup")
 }
 
 
+function signupcopyPast(){
+  function copyText(){
+    document.querySelector("span#copy").addEventListener('click', function(){
+      // Get the text field
+      var copyText = document.getElementById("phoneNumber");
+
+      // Select the text field
+      copyText.select();
+      copyText.setSelectionRange(0, 99999); // For mobile devices
+
+      // Copy the text inside the text field
+      navigator.clipboard.writeText(copyText.value);
+      document.querySelector("#copy").innerHTML = "Copied";
+                
+    });
+  }copyText();
+
+  function pasteText(){
+    const pasteButton = document.querySelector('span#paste');
+
+    pasteButton.addEventListener('click', async () => {
+      try {
+        const text = await navigator.clipboard.readText()
+        document.querySelector('input#pementID').value += text;
+        console.log('Text pasted.');
+        } catch (error) {
+          console.log('Failed to read clipboard');
+        }
+      });
+  }pasteText();
+
+}signupcopyPast();
 
 window.signup=async function(){
 
@@ -892,7 +960,6 @@ let pementID = document.getElementById("pementID").value;
 
 let pass = document.getElementById("password").value;
 let referel = document.getElementById("referel").value;
-
 
 if(name == "" || phone == "" || pementNumber == "" || pementAmount == "" || pementID == "" || pass == "" || referel == "" ){
 
@@ -949,8 +1016,6 @@ signupMsg.innerHTML=error.message;
 }
 
 }
-
-
 
 window.login=async function(){
 
@@ -1053,128 +1118,291 @@ window.onload=function(){
           sitem.style.display="none";
         })
     }bodyclear();
+    
+    
+    function allCourses(){
+      document.querySelector("#courses").style.display="none";
+      document.querySelector("#logincourses").style.display="block";
+      const courseList = document.querySelector("#courseList");
 
-    function courses(){
-      document.querySelectorAll(".course-card").forEach((sitem)=>{
-          sitem.addEventListener('click', function(){
-            window.scrollTo(0, 0);
-            document.querySelector(".courses-active").style.width = "100%";
-            document.querySelector(".courses-active").innerHTML = `
-                <div class="backbtn">
-                  <span class="back1">|</span>
-                  <span class="back2">|</span>
-                </div>
-                <h2>Course Active</h2>
-                <h3>${sitem.children[1].value}</h3>
-                <img id="courseimg" src="${sitem.children[0].src}" alt="">
-                <input type="text" readonly class="id" value="${"ID : " + user.phone}">
-                <input type="text" readonly class="setId" hidden value="${ user.phone}">
-                <input type="text" placeholder="Enter Your Phone Number" id="yourphoneNumber">
-                <input type="text" readonly class="name" value="${"Name : "+user.fullname}">
-                <input type="text" readonly class="setName" hidden value="${user.fullname}">
-                <input type="text" class="coursesName" readonly value="${"Course : " + sitem.children[1].value}">
-                <input type="text" class="setCoursesName" readonly hidden value="${sitem.children[1].value}">
-                <div class="number-copy">
-                  <input readonly type="text" id="phoneNumber" value="Payment : 01767767606">
-                  <span id="copy">Copy</span>
-                </div>
-                <div class="number-copy">
-                  <input type="text" id="transitionId" placeholder="Paste Transition Id">
-                  <span id="paste">Paste</span>
-                </div>
-                <button>Course Active</button>
-                <div class="courceHideen"></div>
-            `;
+      onValue(ref(db, "courseTitle/"), (snapshot) => {
+          courseList.innerHTML = "";
+          
 
-            function copyText(){
-              document.querySelector("#copy").addEventListener('click', function(){
-                // Get the text field
-                var copyText = document.getElementById("phoneNumber");
+          if (!snapshot.exists()) {
+              courseList.innerHTML = `
+              <div class="course-card">
+                  <span colspan="4" style="text-align:center;">
+                      No users found
+                  </span>
+              </div>`;
+              return;
+          }
 
-                // Select the text field
-                copyText.select();
-                copyText.setSelectionRange(0, 99999); // For mobile devices
+          let totalCours = 0;
 
-                // Copy the text inside the text field
-                navigator.clipboard.writeText(copyText.value);
-                document.querySelector("#copy").innerHTML = "Copied";
-              
-              });
-            }copyText();
+          snapshot.forEach((child) => {
             
-            function pasteText(){
-              const pasteButton = document.querySelector('span#paste');
+              totalCours++;
+              
+              const courses = child.val();
 
-              pasteButton.addEventListener('click', async () => {
-                try {
-                  const text = await navigator.clipboard.readText()
-                  document.querySelector('input#transitionId').value += text;
-                  console.log('Text pasted.');
-                } catch (error) {
-                  console.log('Failed to read clipboard');
-                }
-              });
-            }pasteText();
+              courseList.innerHTML += `
+              <div id="allcourses" class="col-md-6 col-lg-4">
+                <div class="course-card">
+                  <img src="${courses.coursesImg}" alt="${courses.title}">
+                  <input type="text" hidden value="${courses.title}">
+                  <h4>${courses.title}</h4>
+                  <p>${courses.subTitle}</p>
+                  <div class="price">TK : ${courses.price}</div>
+                  <input type="text" hidden value="${courses.price}">
+                  <div class="statuse ${courses.status}" data-id="${child.key}">${courses.status}</div>
+                </div>
+              </div>
+              `;
+          });
 
-            function coursescloas(){
-              document.querySelector(".backbtn").addEventListener('click', function(){
-                document.querySelector(".courses-active").style.width = "0";
-                document.querySelector(".courses-active").innerHTML = "";
-              })
-            }coursescloas();
 
-            function request(){
-              document.querySelector(".courses-active button").addEventListener('click', function(){
-                const profileName = document.querySelector(".setName").value;
-                const profileID = document.querySelector(".setId").value;
-                const phoneNumber = document.querySelector("#yourphoneNumber").value;
-                const course = document.querySelector(".setCoursesName").value;
-                const coursesImg = document.querySelector("#courseimg").src;
-                const transictionID = document.querySelector("#transitionId").value;
+          function courses(){
+            document.querySelectorAll(".course-card").forEach((sitem)=>{
+                sitem.addEventListener('click', function(){
+                  window.scrollTo(0, 0);
+                  document.querySelector(".courses-active").style.width = "100%";
 
-                if(phoneNumber !== ""){
-                  if(transictionID !== ""){
-                    setTimeout(() => {
-
-                      
-
-                      const newUserRef = push(ref(db, "reqouest"));
-
-                        set(newUserRef, {
-                          profileName : profileName,
-                          profileID : profileID,
-                          phoneNumber : phoneNumber,
-                          course : course,
-                          coursesImg : coursesImg,
-                          transictionID : transictionID,
-                      });
-
-                      // set(ref(db, "reqouest/" + profileID), {
-                      //   profileName : profileName,
-                      //   profileID : profileID,
-                      //   phoneNumber : phoneNumber,
-                      //   course : course,
-                      //   coursesImg : coursesImg,
-                      //   transictionID : transictionID
-                      // });
-                            
-                      document.querySelector(".courses-active button").innerHTML = "Coures Active Request";
-                      document.querySelector(".courceHideen").style.display = "none";
-                    }, 1000);
+                  if(sitem.children[5].value == "Free"){
+                    free()
                   }else{
-                    document.querySelector(".courceHideen").style.display = "block";
-                    document.querySelector(".courceHideen").innerHTML = "Enter Your Transiction ID";
+                    paid()
                   }
-                }else{
-                  document.querySelector(".courceHideen").style.display = "block";
-                  document.querySelector(".courceHideen").innerHTML = "Enter Your Phone Number";
-                }
-              })
 
-            }request();
-          })
-        })
-    }courses();
+                  function free(){
+                    document.querySelector(".courses-active").innerHTML = `
+                      <div class="backbtn">
+                        <span class="back1">|</span>
+                        <span class="back2">|</span>
+                      </div>
+                      <h2>Course Active</h2>
+                      <h3>${sitem.children[1].value}</h3>
+                      <img id="courseimg" src="${sitem.children[0].src}" alt="">
+                      <input type="text" readonly class="id" value="${"ID : " + user.phone}">
+                      <input type="text" readonly class="setId" hidden value="${ user.phone}">
+                      <input type="text" readonly class="name" value="${"Name : "+user.fullname}">
+                      <input type="text" readonly class="setName" hidden value="${user.fullname}">
+                      <input type="text" class="coursesName" readonly value="${sitem.children[1].value}">
+                      <input type="text" class="coursesPrice" readonly value="${sitem.children[5].value + " : TK"}">
+                      <input type="text" class="setCoursesName" readonly hidden value="${sitem.children[1].value}">
+                      
+                      <button>Course Active</button>
+                      <div class="courceHideen"></div>
+                    `;
+
+                    function coursescload(){
+                      document.querySelector(".backbtn").addEventListener('click', function(){
+                        document.querySelector(".courses-active").style.width = "0";
+                        document.querySelector(".courses-active").innerHTML = "";
+                      })
+                    }coursescload();
+
+                    function request(){
+                      document.querySelector(".courses-active button").addEventListener('click', function(){
+                        const profileName = document.querySelector(".setName").value;
+                        const profileID = document.querySelector(".setId").value;
+                        const course = document.querySelector(".setCoursesName").value;
+                        const coursesImg = document.querySelector("#courseimg").src;
+
+                        setTimeout(() => {
+                          const newUserRef = push(ref(db, "reqouest"));
+
+                            set(newUserRef, {
+                              profileName : profileName,
+                              profileID : profileID,
+                              course : course,
+                              coursesImg : coursesImg,
+                            });
+                                    
+                            document.querySelector(".courses-active button").innerHTML = "Coures Active Request";
+                            document.querySelector(".courceHideen").style.display = "none";
+                        }, 1000);
+                      })
+
+                    }request();
+
+                  }
+
+
+                  function paid(){
+                    document.querySelector(".courses-active").innerHTML = `
+                      <div class="backbtn">
+                        <span class="back1">|</span>
+                        <span class="back2">|</span>
+                      </div>
+                      <h2>Course Active</h2>
+                      <h3>${sitem.children[1].value}</h3>
+                      <img id="courseimg" src="${sitem.children[0].src}" alt="">
+                      <input type="text" readonly class="id" value="${"ID : " + user.phone}">
+                      <input type="text" readonly class="setId" hidden value="${ user.phone}">
+                      <input type="text" readonly class="name" value="${"Name : "+user.fullname}">
+                      <input type="text" placeholder="Enter Your Phone Number" id="yourphoneNumber">
+                      <input type="text" readonly class="setName" hidden value="${user.fullname}">
+                      <input type="text" class="coursesName" readonly value="${sitem.children[1].value}">
+                      <input type="text" class="coursesPrice" readonly value="${sitem.children[5].value + " : TK"}">
+                      <input type="text" class="setCoursesName" readonly hidden value="${sitem.children[1].value}">
+                      <div class="number-copy">
+                        <input readonly type="text" id="phoneNumber" value="Payment : 01767767606">
+                        <span id="copy">Copy</span>
+                      </div>
+                      <div class="number-copy">
+                        <input type="text" id="transitionId" placeholder="Paste Transition Id">
+                        <span id="paste">Paste</span>
+                      </div>
+                      <button>Course Active</button>
+                      <div class="courceHideen"></div>
+                    `;
+
+                    function copyText(){
+                      document.querySelector("#copy").addEventListener('click', function(){
+                        // Get the text field
+                        var copyText = document.getElementById("phoneNumber");
+
+                        // Select the text field
+                        copyText.select();
+                        copyText.setSelectionRange(0, 99999); // For mobile devices
+
+                        // Copy the text inside the text field
+                        navigator.clipboard.writeText(copyText.value);
+                        document.querySelector("#copy").innerHTML = "Copied";
+                      
+                      });
+                    }copyText();
+                    
+                    function pasteText(){
+                      const pasteButton = document.querySelector('span#paste');
+
+                      pasteButton.addEventListener('click', async () => {
+                        try {
+                          const text = await navigator.clipboard.readText()
+                          document.querySelector('input#transitionId').value += text;
+                          console.log('Text pasted.');
+                        } catch (error) {
+                          console.log('Failed to read clipboard');
+                        }
+                      });
+                    }pasteText();
+
+                    function coursescload(){
+                      document.querySelector(".backbtn").addEventListener('click', function(){
+                        document.querySelector(".courses-active").style.width = "0";
+                        document.querySelector(".courses-active").innerHTML = "";
+                      })
+                    }coursescload();
+
+                    function request(){
+                      document.querySelector(".courses-active button").addEventListener('click', function(){
+                        const profileName = document.querySelector(".setName").value;
+                        const profileID = document.querySelector(".setId").value;
+                        const phoneNumber = document.querySelector("#yourphoneNumber").value;
+                        const course = document.querySelector(".setCoursesName").value;
+                        const coursesImg = document.querySelector("#courseimg").src;
+                        const transictionID = document.querySelector("#transitionId").value;
+
+                        if(phoneNumber !== ""){
+                          if(transictionID !== ""){
+                            setTimeout(() => {
+
+                              
+
+                              const newUserRef = push(ref(db, "reqouest"));
+
+                                set(newUserRef, {
+                                  profileName : profileName,
+                                  profileID : profileID,
+                                  phoneNumber : phoneNumber,
+                                  course : course,
+                                  coursesImg : coursesImg,
+                                  transictionID : transictionID,
+                              });
+                                    
+                              document.querySelector(".courses-active button").innerHTML = "Coures Active Request";
+                              document.querySelector(".courceHideen").style.display = "none";
+                            }, 1000);
+                          }else{
+                            document.querySelector(".courceHideen").style.display = "block";
+                            document.querySelector(".courceHideen").innerHTML = "Enter Your Transiction ID";
+                          }
+                        }else{
+                          document.querySelector(".courceHideen").style.display = "block";
+                          document.querySelector(".courceHideen").innerHTML = "Enter Your Phone Number";
+                        }
+                      })
+
+                    }request();
+                  }
+                  
+                })
+              });
+              
+            function dashboardShow(){
+              onValue(ref(db, "coursesAcctivided/" + user.phone), (snapshot) => {
+                // courseList.innerHTML = "";
+                
+
+                if (!snapshot.exists()) {
+                    // courseList.innerHTML = `
+                    // <div class="course-card">
+                    //     <span colspan="4" style="text-align:center;">
+                    //         No users found
+                    //     </span>
+                    // </div>`;
+                    console.log("NO");
+                    
+                    return;
+                }
+
+                snapshot.forEach((child) => {
+                    
+                    const courses = child.val();
+                    document.querySelector(".dashBord").innerHTML = `<button>Dashboard</button>`;
+
+                    document.querySelector(".dashBord button").addEventListener('click', function(){
+                      if(user=="Null"){
+                        location.replace("http://127.0.0.1:5500/");
+                      }else{
+                        location.replace("http://127.0.0.1:5500/Dashboard/");
+                      }
+                    })
+                    
+                })
+              })
+            }dashboardShow();
+
+        }courses();
+
+        
+
+          // function courseActive(){
+          //   document.querySelectorAll("div#allcourses").forEach(single =>{
+          //     single.addEventListener('click', (e) =>{
+                
+          //       if(e.target.classList.contains("statuse")){
+
+          //         const id = e.target.dataset.id;
+          //         console.log(id);
+                  
+          //         update(ref(db, "courseTitle/" + id),{
+          //           status : "Active"
+          //         })
+          //       }
+                    
+          //     })
+
+          //   })  
+                
+          // }courseActive();
+
+      });
+    }allCourses();
+
+
 
   }else if(!user){
     document.querySelectorAll(".statuse").forEach(singleStatuse => {
@@ -1205,6 +1433,12 @@ function sltoggle(){
 
   document.querySelector("div#signup div.backbtn").addEventListener('click', function(){
     document.querySelector("div#signup").classList.toggle("active");
+    document.querySelector("section#signupLogin").classList.toggle("top");
+    
+  });
+
+  document.querySelector("div#login div.backbtn").addEventListener('click', function(){
+    document.querySelector("div#login").classList.toggle("active");
     document.querySelector("section#signupLogin").classList.toggle("top");
     
   })
