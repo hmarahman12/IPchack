@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="icon" href="../img/logo.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        div#courseList {
+            border: 1px solid #c5c5c5;
+            border-radius: 3px;
+            box-shadow: 0px 0px 10px 0px black;
+        }
+
+        tbody, td, tfoot, th, thead, tr {
+            border-color: inherit;
+            border-style: solid;
+            border-width: 0;
+            padding: 10px;
+            font-size: 15px;
+        }
+        thead {
+            border: 1px solid #a9a9a9;
+        }
+        tbody tr {
+            background: #dddddd;
+            border: 1px solid #f9f9f9;
+            cursor: pointer;
+        }
+        td img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .courseOpen {
+            margin: 5px;
+        }
+    
+        .backIcone {
+            display: flex;
+            justify-content: space-between;
+        }
+        .backIcone img {
+            margin: 5px;
+            cursor: pointer;
+        }
+
+        img#backBtn {
+            width: 40px;
+            margin: 0 47px 10px 0;
+            height: 40px;
+        }
+        img#courseImg {
+            width: 70px;
+            border: 1px solid #b5b5b5;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: 0 0 6px 0 black;
+        }
+
+        .live{
+            width:100%;
+            max-width:1000px;
+            margin:auto;
+            aspect-ratio:16/9;
+            overflow:hidden;
+            border-radius:10px;
+        }
+
+        .live iframe,.liveClassStart{
+            width:100%;
+            height:100%;
+            border:none;
+            display:block;
+        }
+
+        .liveClassStart {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .horof {
+            border: 1px solid #cbcbcb;
+            margin: 1px;
+            padding: 3px;
+            width: 50px;
+            height: 70px;
+            cursor: pointer;
+            font-size: 20px;
+        }
+        .horof span {
+            display: block;
+        }
+        span.arabic {
+            font-size: 30px;
+        }
+
+        .classStart div {
+            font-size: 15px;
+            background: #dfdfdf;
+            border: 1px solid #ffffff;
+            padding: 8px;
+            border-radius: 3px;
+            cursor: pointer;
+            margin: 13px 0;
+        }
+
+
+h1{
+    text-align:center;
+    margin-bottom:20px;
+}
+
+.containerr {
+    max-width: 1000px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 15px;
+    border: 1px solid #cfcfcf;
+    padding: 5px;
+    border-radius: 3px;
+}
+
+.card{
+    background:#fff;
+    padding:20px;
+    border-radius:12px;
+    text-align:center;
+    cursor:pointer;
+    box-shadow:0 2px 8px rgba(0,0,0,.1);
+    transition:.3s;
+}
+
+.card:hover{
+    transform:translateY(-5px);
+}
+
+.arabic{
+    font-size:50px;
+    margin-bottom:10px;
+    direction:rtl;
+}
+
+.bangla{
+    font-size:18px;
+    color:#444;
+}
+
+.info{
+    text-align:center;
+    margin-top:20px;
+    color:#666;
+}
+    </style>
+</head>
+<body>
+    <section class="py-5 dashboard bg-white" id="courseList">
+        <div class="container py-5">
+        <div class="section-title text-center">
+            <div id="courseList" class="row g-4">
+
+                <h2>কোর্স</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>কোর্স</th>
+                            <th>Image</th>
+                            <th>Profile ID</th>
+                            <th>Course Viw</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            
+            </div>
+        </div>
+        </div>
+    </section>
+
+
+
+<script type="module">
+    import { initializeApp }
+    from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+
+    import {getDatabase,ref,set,get,update,onValue,push,child}
+    from "https://www.gstatic.com/firebasejs/12.2.1/firebase-database.js";
+
+
+
+    const firebaseConfig = {
+
+    apiKey:"AIzaSyBTW2vmeP7rm95p2I7mrqpbky9YJEaNUgc",
+
+    authDomain:"parsonalchatapp.firebaseapp.com",
+
+    databaseURL:"https://parsonalchatapp-default-rtdb.firebaseio.com",
+
+    projectId:"parsonalchatapp",
+
+    storageBucket:"parsonalchatapp.firebasestorage.app",
+
+    messagingSenderId:"401747590508",
+
+    appId:"1:401747590508:web:dbc2d2b40fa52c1e9fc749"
+
+    };
+
+
+    const app=initializeApp(firebaseConfig);
+
+    const db=getDatabase(app);
+
+const letters = [
+["ا","আলিফ","audio/alif.mp3"],
+["ب","বা","audio/ba.mp3"],
+["ت","তা","audio/ta.mp3"],
+["ث","ছা","audio/sa.mp3"],
+["ج","জীম","audio/jeem.mp3"],
+["ح","হা","audio/hha.mp3"],
+["خ","খা","audio/kha.mp3"],
+["د","দাল","audio/dal.mp3"],
+["ذ","যাল","audio/jal.mp3"],
+["ر","রা","audio/ra.mp3"],
+["ز","যা","audio/za.mp3"],
+["س","সীন","audio/seen.mp3"],
+["ش","শীন","audio/sheen.mp3"],
+["ص","সদ","audio/soad.mp3"],
+["ض","দদ","audio/doad.mp3"],
+["ط","ত্বা","audio/toa.mp3"],
+["ظ","য্","audio/joa.mp3"],
+["ع","আইন","audio/ain.mp3"],
+["غ","গইন","audio/goin.mp3"],
+["ف","ফা","audio/fa.mp3"],
+["ق","ক্বফ","audio/qaf.mp3"],
+["ك","কাফ","audio/kaf.mp3"],
+["ل","লাম","audio/lam.mp3"],
+["م","মীম","audio/meem.mp3"],
+["ن","নূন","audio/noon.mp3"],
+["و","ওয়াও","audio/waw.mp3"],
+["ه","হা","audio/ha.mp3"],
+["ء","হামযা","audio/hamza.mp3"],
+["ي","ইয়া","audio/ya.mp3"]
+];
+
+    function corseList(){
+
+        const courseList = document.querySelector("div#courseList table tbody");
+
+        let user = JSON.parse(localStorage.getItem("user"));
+        onValue(ref(db, "coursesAcctivided/" + user.phone), (snapshot) => {
+            courseList.innerHTML = "";
+            
+
+            if (!snapshot.exists()) {
+                courseList.innerHTML = `
+                <tr>
+                    <td colspan="4" style="text-align:center;">
+                        No users found
+                    </td>
+                </tr>`;
+                return;
+            }
+
+            let totalCours = 0;
+
+            snapshot.forEach((child) => {
+            
+                totalCours++;
+                
+                const course = child.val();
+                
+                
+                const row = document.createElement("tr");
+                
+
+                row.innerHTML = `
+                        <td>${course.course || "No Name"}</td>
+                        <td>
+                            <img
+                            src="${course.coursesImg || 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'}"
+                            width="50">
+                        </td>
+                        <td>${course.profileID}</td>
+                        <td><button class="dataClick" data-id="${child.key}" data-type="${course.dataType}" data-img="${course.coursesImg}">Course Viw</button></td>
+                    
+                `;
+
+                courseList.appendChild(row);
+                
+                document.querySelectorAll("div#courseList table tbody tr").forEach(single =>{
+                    single.addEventListener('click', (e) =>{
+                        
+
+                        if(e.target.classList.contains("dataClick")){
+
+                            const id = e.target.dataset.id;
+                            const type = e.target.dataset.type;
+                            const courseImg = e.target.dataset.img;
+                            console.log(type);
+
+                            if(type === "Arabic"){
+                                document.querySelector("section#courseList div#courseList").innerHTML = `
+                                    <div class="courseOpen">
+                                        <div class="backIcone">
+                                            <img id="backBtn" src="../img/back.png">
+                                            <img id="courseImg" src="${courseImg}">
+                                        </div>
+
+                                        
+                                        <div class="containerr" id="letters"><h1>আরবি ২৯ হরফ</h1></div>
+
+
+                                            <div class="courseAlkuran">
+                                                <div class="classStart">
+                                                    <div class="class1">1</div>    
+                                                    <div class="class1">1</div>    
+                                                    <div class="class1">1</div>    
+                                                    <div class="class1">1</div>    
+                                                    <div class="class1">1</div>    
+                                                    <div class="class1">1</div>    
+                                                    <div class="class1">1</div>    
+                                                    <div class="class1">1</div>    
+                                                    <div class="class1">1</div>    
+                                                    <div class="class1">1</div>    
+                                                    <div class="class1">1</div>    
+                                                    <div class="class1">1</div>    
+                                                    <div class="class1">1</div>    
+                                                    <div class="class1">1</div>    
+                                                    <div class="class1">1</div>    
+                                                    <div class="class1">1</div>    
+                                                    <div class="class1">1</div>    
+                                                    <div class="class1">1</div>    
+                                                    <div class="class1">1</div>    
+                                                    <div class="class1">1</div>    
+                                                </div>    
+                                            </div>
+                                    </div>
+                                `;
+
+                                const container = document.getElementById("letters");
+
+                                let currentAudio = null;
+
+                                letters.forEach(item => {
+
+                                    const card = document.createElement("div");
+                                    card.className = "card";
+
+                                    card.innerHTML = `
+                                        <div class="arabic">${item[0]}</div>
+                                        <div class="bangla">${item[1]}</div>
+                                    `;
+
+                                    card.addEventListener("click", () => {
+
+                                        if(currentAudio){
+                                            currentAudio.pause();
+                                            currentAudio.currentTime = 0;
+                                        }
+
+                                        currentAudio = new Audio(item[2]);
+                                        currentAudio.play();
+
+                                        console.log("Playing:", item[0]);
+                                    });
+
+                                    container.appendChild(card);
+                                });
+                            }else if(type === "bangla"){
+                                document.querySelector("section#courseList div#courseList").innerHTML = `
+                                    <div class="courseOpen">
+                                        <div class="backIcone">
+                                            <img id="backBtn" src="../img/back.png">
+                                            <img id="courseImg" src="${courseImg}">
+                                        </div>
+
+                                        <div class="classStart">
+                                            <div>Lesson 1</div>
+                                            <div>Lesson 2</div>
+                                            <div>Lesson 3</div>
+                                            <div>Lesson 4</div>
+                                        </div>
+                                    </div>
+                                `;
+                            }
+                            
+                            
+                            
+                        }
+
+                            document.querySelectorAll("img#backBtn").forEach(e =>{
+                                e.addEventListener('click', function(){
+                                    location.replace("http://127.0.0.1:5500/Dashboard/");
+                                    
+                                })
+                            })
+
+                    })
+
+                })
+
+
+            });
+        })
+    }corseList();
+</script>
+</body>
+</html>
